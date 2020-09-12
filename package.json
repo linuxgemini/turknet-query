@@ -22,7 +22,7 @@
     ],
     "repository": {
         "type": "git",
-        "url": "https://cgit.linuxgemini.space/randomtastic/turknet-query"
+        "url": "git+https://cgit.linuxgemini.space/randomtastic/turknet-query"
     },
     "license": "MIT",
     "dependencies": {

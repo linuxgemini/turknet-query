@@ -29,7 +29,7 @@ const exit = () => {
 };
 
 const exitWithError = (err) => {
-    console.error("\n\nAn error occured!\n");
+    console.error("\n\nBir hata meydana geldi!\n");
     if (err.stack) console.error(`\nStacktrace:\n${err.stack}\n`);
     return setTimeout(() => {
         process.exit(1);
@@ -37,7 +37,7 @@ const exitWithError = (err) => {
 };
 
 const main = () => {
-    console.warn(chalk.yellow("Gerekli paketler yükleniyor, lütfen bekleyin...\n"));
+    console.log(chalk.yellow("Gerekli paketler yükleniyor, lütfen bekleyin...\n"));
     let api = new queryapi();
 
     program

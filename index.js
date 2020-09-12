@@ -37,16 +37,16 @@ const exitWithError = (err) => {
 };
 
 const main = () => {
-    console.log(chalk.yellow("Gerekli paketler yükleniyor, lütfen bekleyin...\n"));
-    let api = new queryapi();
-
     program
-        .version("0.1.1")
+        .version("0.1.5", "-v --version")
         .description("Adresiniz veya telefon numaranızı girerek Türknet altyapı durumunu sorgulayın!");
 
     program
         .action(async () => {
             try {
+                console.log(chalk.yellow("Gerekli paketler yükleniyor, lütfen bekleyin...\n"));
+                let api = new queryapi();
+
                 let tipPrompt = await inquirer.prompt([
                     {
                         "type": "list",

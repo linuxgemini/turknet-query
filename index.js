@@ -38,7 +38,7 @@ const exitWithError = (err) => {
 
 const main = () => {
     program
-        .version("0.1.5", "-v --version")
+        .version("0.1.5", "-v, --version")
         .description("Adresiniz veya telefon numaranızı girerek Türknet altyapı durumunu sorgulayın!");
 
     program

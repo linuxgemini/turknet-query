@@ -68,7 +68,7 @@ const main = () => {
                             {
                                 "type": "list",
                                 "name": "ilAdi",
-                                "message": "Lütfen ilinizin plaka kodunu girin:",
+                                "message": "Lütfen ilinizi seçin:",
                                 "choices": Object.keys(iller)
                             }
                         ]);

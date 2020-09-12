@@ -13,7 +13,8 @@
 
 const fs = require("fs");
 const https = require("https");
-https.globalAgent.options.ca = fs.readFileSync("./ca_bundle/ca_intermediate_root_bundle.pem");
+const path = require("path");
+https.globalAgent.options.ca = fs.readFileSync(path.resolve(__dirname, "./ca_bundle/ca_intermediate_root_bundle.pem"));
 
 const program = require("commander");
 const inquirer = require("inquirer"); 

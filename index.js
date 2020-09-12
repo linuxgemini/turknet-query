@@ -13,11 +13,12 @@
 
 const fs = require("fs");
 const https = require("https");
-https.globalAgent.options.ca = fs.readFileSync("node_modules/node_extra_ca_certs_mozilla_bundle/ca_bundle/ca_intermediate_root_bundle.pem");
+https.globalAgent.options.ca = fs.readFileSync("./ca_bundle/ca_intermediate_root_bundle.pem");
 
 const program = require("commander");
 const inquirer = require("inquirer"); 
 const chalk = require("chalk");
+const iller = require("./iller.json");
 const queryapi = require("./lib/turknetquery");
 
 const exit = () => {
@@ -62,24 +63,16 @@ const main = () => {
     
                 switch (tipPrompt.method) {
                     case "Adres":
-                        let plakaPrompt = await inquirer.prompt([
+                        let ilPrompt = await inquirer.prompt([
                             {
-                                "type": "input",
-                                "name": "plaka",
+                                "type": "list",
+                                "name": "ilAdi",
                                 "message": "Lütfen ilinizin plaka kodunu girin:",
-                                "filter": (i) => {
-                                    let reg = /^[0-9]+$/;
-                                    if (reg.test(i) && (i > 0 && i < 82)) return parseInt(i);
-                                    return i;
-                                },
-                                "validate": (i) => {
-                                    if (typeof i !== "number") return "Geçerli bir plaka kodu girin.";
-                                    return true;
-                                }
+                                "choices": Object.keys(iller)
                             }
                         ]);
     
-                        let ilceler = await api.handleIl(plakaPrompt.plaka);
+                        let ilceler = await api.handleIl(iller[ilPrompt.ilAdi]);
                         let ilcePrompt = await inquirer.prompt([
                             {
                                 "type": "list",

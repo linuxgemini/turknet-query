@@ -30,9 +30,20 @@ const exit = () => {
 
 const exitWithError = (err) => {
     console.error("\n\nBir hata meydana geldi!\n");
-    if (err.stack) console.error(`\nStacktrace:\n${err.stack}\n`);
+    if (err.type && err.type === "turknetAPIError") {
+        console.error(`Türknet Hata Kodu "${chalk.red(err.code)}": ${chalk.yellow(err.message)}`);
+    } else if (err.stack) {
+        console.error(`\nStacktrace:\n${err.stack}\n`);
+    }
     return setTimeout(() => {
         process.exit(1);
+    }, 1000);
+};
+
+const exitWithTurknetError = (err) => {
+    console.error(`\n\nTürknet Hata Kodu "${chalk.red(err.code)}": ${chalk.yellow(err.message)}`);
+    return setTimeout(() => {
+        process.exit(0);
     }, 1000);
 };
 
@@ -208,7 +219,11 @@ ${chalk.cyan("YAPA Durumu:")}
                 }
                 exit();
             } catch (error) {
-                exitWithError(error);
+                if (error.type && error.type === "turknetAPIError") {
+                    exitWithTurknetError(error);
+                } else {
+                    exitWithError(error);
+                }
             }
         });
 

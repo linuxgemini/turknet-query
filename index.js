@@ -30,11 +30,7 @@ const exit = () => {
 
 const exitWithError = (err) => {
     console.error("\n\nBir hata meydana geldi!\n");
-    if (err.type && err.type === "turknetAPIError") {
-        console.error(`Türknet Hata Kodu "${chalk.red(err.code)}": ${chalk.yellow(err.message)}`);
-    } else if (err.stack) {
-        console.error(`\nStacktrace:\n${err.stack}\n`);
-    }
+    if (err.stack) console.error(`\nStacktrace:\n${err.stack}\n`);
     return setTimeout(() => {
         process.exit(1);
     }, 1000);
@@ -49,7 +45,7 @@ const exitWithTurknetError = (err) => {
 
 const main = () => {
     program
-        .version("0.2.1", "-v, --version")
+        .version("0.2.2", "-v, --version")
         .description("Adresiniz veya telefon numaranızı girerek Türknet altyapı durumunu sorgulayın!");
 
     program

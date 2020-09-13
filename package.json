@@ -1,6 +1,6 @@
 {
     "name": "turknet-query",
-    "version": "0.2.1",
+    "version": "0.2.2",
     "description": "Queries Turk.net for speed availability in your area.",
     "preferGlobal": true,
     "bin": "./index.js",

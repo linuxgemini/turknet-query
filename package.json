@@ -2,6 +2,9 @@
     "name": "turknet-query",
     "version": "0.2.2",
     "description": "Queries Turk.net for speed availability in your area.",
+    "engines": {
+        "node": ">=10"
+    },
     "preferGlobal": true,
     "bin": "./index.js",
     "scripts": {

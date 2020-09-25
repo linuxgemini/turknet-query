@@ -9,5 +9,5 @@ A CLI applet to query your infra speed without loading the entire turk.net websi
 This package is written and tested on node.js v12+
 
 ```
-npm install -g git+https://gitlab.com/linuxgemini/turknet-query
+npm install -g linuxgemini/turknet-query
 ```

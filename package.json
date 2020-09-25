@@ -1,6 +1,6 @@
 {
     "name": "turknet-query",
-    "version": "0.2.2",
+    "version": "0.2.3",
     "description": "Queries Turk.net for speed availability in your area.",
     "engines": {
         "node": ">=10"
@@ -25,7 +25,7 @@
     ],
     "repository": {
         "type": "git",
-        "url": "git+https://cgit.linuxgemini.space/randomtastic/turknet-query"
+        "url": "git+https://github.com/linuxgemini/turknet-query.git"
     },
     "license": "MIT",
     "dependencies": {

@@ -11,3 +11,11 @@ This package is written and tested on node.js v12+
 ```
 npm install -g linuxgemini/turknet-query
 ```
+
+## Usage
+
+Just run `turknet-query` on your terminal after installing globally via npm.
+
+## Screenshot
+
+![](https://btw.i-use-ar.ch/i/3hr8acjx.png)

@@ -11,15 +11,10 @@
 
 "use strict";
 
-const fs = require("fs");
-const https = require("https");
-const path = require("path");
-https.globalAgent.options.ca = fs.readFileSync(path.resolve(__dirname, "./ca_bundle/ca_intermediate_root_bundle.pem"));
-
-const program = require("commander");
-const inquirer = require("inquirer"); 
 const chalk = require("chalk");
 const iller = require("./iller.json");
+const inquirer = require("inquirer");
+const program = require("commander");
 const queryapi = require("./lib/turknetquery");
 
 const exit = () => {
@@ -45,7 +40,7 @@ const exitWithTurknetError = (err) => {
 
 const main = () => {
     program
-        .version("0.2.2", "-v, --version")
+        .version("0.2.5", "-v, --version")
         .description("Adresiniz veya telefon numaranızı girerek Türknet altyapı durumunu sorgulayın!");
 
     program

@@ -4,7 +4,7 @@
 
 /**
  * Turknet Query CLI
- * 
+ *
  * @author linuxgemini
  * @license MIT
  */
@@ -61,9 +61,9 @@ const main = () => {
                         "default": 0
                     }
                 ]);
-    
+
                 let res;
-    
+
                 switch (tipPrompt.method) {
                     case "Adres":
                         let ilPrompt = await inquirer.prompt([
@@ -74,8 +74,8 @@ const main = () => {
                                 "choices": Object.keys(iller)
                             }
                         ]);
-    
-                        let ilceler = await api.handleIl(iller[ilPrompt.ilAdi]);
+
+                        let ilceler = await api.getIlceler(iller[ilPrompt.ilAdi]);
                         let ilcePrompt = await inquirer.prompt([
                             {
                                 "type": "list",
@@ -84,8 +84,8 @@ const main = () => {
                                 "choices": Object.keys(ilceler)
                             }
                         ]);
-    
-                        let bucaklar = await api.handleIlce(ilceler[ilcePrompt.ilceAdi]);
+
+                        let bucaklar = await api.getBucaklar(ilceler[ilcePrompt.ilceAdi]);
                         let useBucak;
                         if (Object.keys(bucaklar).length === 1) {
                             useBucak = bucaklar[Object.keys(bucaklar)[0]];
@@ -100,8 +100,8 @@ const main = () => {
                             ]);
                             useBucak = bucaklar[bucakPrompt.bucakAdi];
                         }
-    
-                        let koyler = await api.handleBucak(useBucak);
+
+                        let koyler = await api.getKoyler(useBucak);
                         let useKoy;
                         if (Object.keys(koyler).length === 1) {
                             useKoy = koyler[Object.keys(koyler)[0]];
@@ -116,8 +116,8 @@ const main = () => {
                             ]);
                             useKoy = koyler[koyPrompt.koyAdi];
                         }
-    
-                        let mahalleler = await api.handleKoy(useKoy);
+
+                        let mahalleler = await api.getMahalleler(useKoy);
                         let mahallePrompt = await inquirer.prompt([
                             {
                                 "type": "list",
@@ -126,8 +126,8 @@ const main = () => {
                                 "choices": Object.keys(mahalleler)
                             }
                         ]);
-    
-                        let caddeSokaklar = await api.handleMahalle(mahalleler[mahallePrompt.mahalleAdi]);
+
+                        let caddeSokaklar = await api.getCaddeSokaklar(mahalleler[mahallePrompt.mahalleAdi]);
                         let caddeSokakPrompt = await inquirer.prompt([
                             {
                                 "type": "list",
@@ -136,8 +136,8 @@ const main = () => {
                                 "choices": Object.keys(caddeSokaklar)
                             }
                         ]);
-    
-                        let binalar = await api.handleCadde(caddeSokaklar[caddeSokakPrompt.caddeSokakAdi]);
+
+                        let binalar = await api.getBinalar(caddeSokaklar[caddeSokakPrompt.caddeSokakAdi]);
                         let binaPrompt = await inquirer.prompt([
                             {
                                 "type": "list",
@@ -146,8 +146,8 @@ const main = () => {
                                 "choices": Object.keys(binalar)
                             }
                         ]);
-    
-                        let daireler = await api.handleBina(binalar[binaPrompt.binaAdi]);
+
+                        let daireler = await api.getDaireler(binalar[binaPrompt.binaAdi]);
                         let dairePrompt = await inquirer.prompt([
                             {
                                 "type": "list",
@@ -156,7 +156,7 @@ const main = () => {
                                 "choices": Object.keys(daireler)
                             }
                         ]);
-    
+
                         res = await api.makeQuery("BBK", daireler[dairePrompt.daireAdi]);
                         break;
                     case "Telefon Numarası":
@@ -171,7 +171,7 @@ const main = () => {
                                 }
                             }
                         ]);
-    
+
                         res = await api.makeQuery("PSTN", telefonPrompt.telno);
                         break;
                     default:
@@ -182,6 +182,7 @@ const main = () => {
 ${chalk.cyan("Türknet Fiber Durumu:")}
     Var mı?: ${(res.turknetFiberAvailability.isAvailable ? chalk.green("Evet") : chalk.red("Hayır"))}
     GigaFiber mi?: ${(res.turknetFiberAvailability.isGigaFiber ? chalk.green("Evet") : chalk.red("Hayır"))}
+    GigaFiber kurulumu planda var mı?: ${(res.turknetFiberAvailability.isGigaFiberPlanned ? chalk.green("Evet") : chalk.red("Hayır"))}
     Maksimum kapasite: ${res.turknetFiberAvailability.maxCapacity}
 ${chalk.cyan("VAE Fiber Durumu:")}
     Var mı?: ${(res.vaeFiberAvailability.isAvailable ? chalk.green("Evet") : chalk.red("Hayır"))}
@@ -189,23 +190,23 @@ ${chalk.cyan("VAE Fiber Durumu:")}
     Maksimum kapasite servis tipi: ${res.vaeFiberAvailability.maxCapacityServiceType}
     NmsMax: ${res.vaeFiberAvailability.nmsMax}
     Tip: ${res.vaeFiberAvailability.type}
-    Açıklama: ${(res.vaeFiberAvailability.description === null ? chalk.red("Yok") : res.vaeFiberAvailability.description)}
+    Açıklama: ${(res.vaeFiberAvailability.description === "" ? chalk.red("Yok") : res.vaeFiberAvailability.description)}
 ${chalk.cyan("VDSL Durumu:")}
     Var mı?: ${(res.vdslAvailability.isAvailable ? chalk.green("Evet") : chalk.red("Hayır"))}
     Maksimum kapasite: ${res.vdslAvailability.maxCapacity}
     Maksimum kapasite servis tipi: ${res.vdslAvailability.maxCapacityServiceType}
     NmsMax: ${res.vdslAvailability.nmsMax}
-    Açıklama: ${(res.vdslAvailability.description === null ? chalk.red("Yok") : res.vdslAvailability.description)}
+    Açıklama: ${(res.vdslAvailability.description === "" ? chalk.red("Yok") : res.vdslAvailability.description)}
 ${chalk.cyan("xDSL Durumu:")}
     Var mı?: ${(res.xdslAvailability.isAvailable ? chalk.green("Evet") : chalk.red("Hayır"))}
     Maksimum kapasite: ${res.xdslAvailability.maxCapacity}
     NmsMax: ${res.vdslAvailability.nmsMax}
-    Açıklama: ${(res.xdslAvailability.description === null ? chalk.red("Yok") : res.xdslAvailability.description)}
+    Açıklama: ${(res.xdslAvailability.description === "" ? chalk.red("Yok") : res.xdslAvailability.description)}
 ${chalk.cyan("YAPA Durumu:")}
     Var mı?: ${(res.yapaAvailability.isAvailable ? chalk.green("Evet") : chalk.red("Hayır"))}
     "Indoor" mu?: ${(res.yapaAvailability.isIndoor ? chalk.green("Evet") : chalk.red("Hayır"))}
     Türknet santralde aktif mi?: ${(res.yapaAvailability.isTurknetActiveOnExchange ? chalk.green("Evet") : chalk.red("Hayır"))}
-    Açıklama: ${(res.yapaAvailability.description === null ? chalk.red("Yok") : res.yapaAvailability.description)}
+    Açıklama: ${(res.yapaAvailability.description === "" ? chalk.red("Yok") : res.yapaAvailability.description)}
 `);
                 }
                 exit();

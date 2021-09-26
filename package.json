@@ -1,6 +1,6 @@
 {
     "name": "turknet-query",
-    "version": "0.2.5",
+    "version": "0.3.0",
     "description": "Queries Turk.net for speed availability in your area.",
     "engines": {
         "node": ">=10"

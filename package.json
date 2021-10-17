@@ -1,7 +1,7 @@
 {
     "name": "turknet-query",
-    "version": "0.3.0",
-    "description": "Queries Turk.net for speed availability in your area.",
+    "version": "0.3.5",
+    "description": "Queries Turk.net for infrastructure availability in your area.",
     "engines": {
         "node": ">=10"
     },
@@ -29,9 +29,9 @@
     },
     "license": "MIT",
     "dependencies": {
-        "node-fetch": "^2.6.1",
-        "commander": "^6.1.0",
-        "inquirer": "^7.3.3",
-        "chalk": "^4.1.0"
+        "node-fetch": "^2.6.5",
+        "commander": "^8.2.0",
+        "inquirer": "^8.2.0",
+        "chalk": "^4.1.2"
     }
 }

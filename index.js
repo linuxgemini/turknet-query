@@ -1,11 +1,9 @@
 #!/usr/bin/env node
 
-/* eslint-disable no-case-declarations */
-
 /**
  * Turknet Query CLI
  *
- * @author linuxgemini
+ * @author İlteriş Yağıztegin Eroğlu "linuxgemini" <ilteris@asenkron.com.tr>
  * @license MIT
  */
 
@@ -15,7 +13,7 @@ const chalk = require("chalk");
 const iller = require("./iller.json");
 const inquirer = require("inquirer");
 const program = require("commander");
-const queryapi = require("./lib/turknetquery");
+const queryapi = require("./lib/turknet-query");
 
 const exit = () => {
     return setTimeout(() => {
@@ -65,7 +63,7 @@ const main = () => {
                 let res;
 
                 switch (tipPrompt.method) {
-                    case "Adres":
+                    case "Adres": {
                         let ilPrompt = await inquirer.prompt([
                             {
                                 "type": "list",
@@ -159,7 +157,8 @@ const main = () => {
 
                         res = await api.makeQuery("BBK", daireler[dairePrompt.daireAdi]);
                         break;
-                    case "Telefon Numarası":
+                    }
+                    case "Telefon Numarası": {
                         let telefonPrompt = await inquirer.prompt([
                             {
                                 "type": "input",
@@ -174,6 +173,7 @@ const main = () => {
 
                         res = await api.makeQuery("PSTN", telefonPrompt.telno);
                         break;
+                    }
                     default:
                         break;
                 }

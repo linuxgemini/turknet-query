@@ -51,12 +51,12 @@ type TurknetAPI_ServiceAvailability struct {
 	} `json:"FiberServiceAvailablity,omitempty"`
 	IsGigaFiberPlanned          bool `json:"IsGigaFiberPlanned,omitempty"`
 	VAEFiberServiceAvailability struct {
-		Description            interface{} `json:"Description,omitempty"`
-		IsAvailable            bool        `json:"IsAvailable,omitempty"`
-		MaxCapacity            int         `json:"MaxCapacity,omitempty"`
-		MaxCapacityServiceType int         `json:"MaxCapacityServiceType,omitempty"`
-		NmsMax                 int         `json:"NmsMax,omitempty"`
-		Type                   int         `json:"Type,omitempty"`
+		Description            string `json:"Description,omitempty"`
+		IsAvailable            bool   `json:"IsAvailable,omitempty"`
+		MaxCapacity            int    `json:"MaxCapacity,omitempty"`
+		MaxCapacityServiceType int    `json:"MaxCapacityServiceType,omitempty"`
+		NmsMax                 int    `json:"NmsMax,omitempty"`
+		Type                   int    `json:"Type,omitempty"`
 	} `json:"VAEFiberServiceAvailability,omitempty"`
 	VDSLServiceAvailability struct {
 		Description            string `json:"Description,omitempty"`
@@ -67,14 +67,14 @@ type TurknetAPI_ServiceAvailability struct {
 		TnRealSpeed            int    `json:"TnRealSpeed,omitempty"`
 	} `json:"VDSLServiceAvailability,omitempty"`
 	XDSLServiceAvailability struct {
-		Description       interface{} `json:"Description,omitempty"`
-		FiberStatusID     int         `json:"FiberStatusId,omitempty"`
-		IsAvailable       bool        `json:"IsAvailable,omitempty"`
-		IsExistedCustomer bool        `json:"IsExistedCustomer,omitempty"`
-		IsIndividualFiber bool        `json:"IsIndividualFiber,omitempty"`
-		MaxCapacity       int         `json:"MaxCapacity,omitempty"`
-		NmsMax            int         `json:"NmsMax,omitempty"`
-		TnRealSpeed       int         `json:"TnRealSpeed,omitempty"`
+		Description       string `json:"Description,omitempty"`
+		FiberStatusID     int    `json:"FiberStatusId,omitempty"`
+		IsAvailable       bool   `json:"IsAvailable,omitempty"`
+		IsExistedCustomer bool   `json:"IsExistedCustomer,omitempty"`
+		IsIndividualFiber bool   `json:"IsIndividualFiber,omitempty"`
+		MaxCapacity       int    `json:"MaxCapacity,omitempty"`
+		NmsMax            int    `json:"NmsMax,omitempty"`
+		TnRealSpeed       int    `json:"TnRealSpeed,omitempty"`
 	} `json:"XDSLServiceAvailability,omitempty"`
 	YapaServiceAvailability struct {
 		Description                     string `json:"Description,omitempty"`

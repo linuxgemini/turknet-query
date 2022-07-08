@@ -47,7 +47,7 @@ var rootCmd = &cobra.Command{
 		flagBbk, _ := cmd.Flags().GetString("bbk")
 		flagPstn, _ := cmd.Flags().GetString("pstn")
 
-		// TODO: query by address
+		// TODO : query by address
 		if flagBbk != "" {
 			queryType = "BBK"
 			answer = flagBbk
@@ -148,18 +148,18 @@ var rootCmd = &cobra.Command{
 	},
 }
 
-func getDescription(description string) interface{} {
+func getDescription(description string) string {
 	if description != "" {
 		return description
 	}
-	return chalk.Red("Yok")
+	return chalk.Red("Yok").String()
 }
 
-func getBooleanText(truthy bool) *chalk.Color {
-	if truthy {
-		return chalk.Green("Evet")
+func getBooleanText(value bool) string {
+	if value {
+		return chalk.Green("Evet").String()
 	} else {
-		return chalk.Red("Hayır")
+		return chalk.Red("Hayır").String()
 	}
 }
 

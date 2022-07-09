@@ -187,7 +187,7 @@ var rootCmd = &cobra.Command{
 			panic(err)
 		}
 
-		fmt.Printf(`%s
+		fmt.Fprintf(color.Output, `%s
 	Var mı?: %s
 	GigaFiber mi?: %s
 	GigaFiber kurulumu planda var mı?: %s

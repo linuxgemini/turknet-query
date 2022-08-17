@@ -1,4 +1,5 @@
 /*
+Package api
 Copyright © 2022 linuxgemini
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -26,31 +27,31 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
-	"io/ioutil"
+	"io"
 	"net/http"
 	"strconv"
 	"strings"
 )
 
-type turknetAPIClient struct {
+type TurknetAPIClient struct {
 	ClientToken     string
 	ClientUserAgent string
 }
 
-type TurknetAPI_ServiceResult struct {
+type TurknetAPIServiceResult struct {
 	Code        int    `json:"Code"`
 	Description string `json:"Description"`
 	Message     string `json:"Message"`
 	ResultType  int    `json:"ResultType"`
 }
 
-type TurknetAPI_FiberServiceAvailablityResult struct {
+type TurknetAPIFiberServiceAvailablityResult struct {
 	IsAvailable bool `json:"IsAvailable,omitempty"`
 	IsGigaFiber bool `json:"IsGigaFiber,omitempty"`
 	MaxCapacity int  `json:"MaxCapacity,omitempty"`
 }
 
-type TurknetAPI_VAEFiberServiceAvailabilityResult struct {
+type TurknetAPIVaeFiberServiceAvailabilityResult struct {
 	Description            string `json:"Description,omitempty"`
 	IsAvailable            bool   `json:"IsAvailable,omitempty"`
 	MaxCapacity            int    `json:"MaxCapacity,omitempty"`
@@ -59,7 +60,7 @@ type TurknetAPI_VAEFiberServiceAvailabilityResult struct {
 	Type                   int    `json:"Type,omitempty"`
 }
 
-type TurknetAPI_VDSLServiceAvailabilityResult struct {
+type TurknetAPIVdslServiceAvailabilityResult struct {
 	Description            string `json:"Description,omitempty"`
 	IsAvailable            bool   `json:"IsAvailable,omitempty"`
 	MaxCapacity            int    `json:"MaxCapacity,omitempty"`
@@ -68,7 +69,7 @@ type TurknetAPI_VDSLServiceAvailabilityResult struct {
 	TnRealSpeed            int    `json:"TnRealSpeed,omitempty"`
 }
 
-type TurknetAPI_XDSLServiceAvailabilityResult struct {
+type TurknetAPIXdslServiceAvailabilityResult struct {
 	Description       string `json:"Description,omitempty"`
 	FiberStatusID     int    `json:"FiberStatusId,omitempty"`
 	IsAvailable       bool   `json:"IsAvailable,omitempty"`
@@ -79,79 +80,79 @@ type TurknetAPI_XDSLServiceAvailabilityResult struct {
 	TnRealSpeed       int    `json:"TnRealSpeed,omitempty"`
 }
 
-type TurknetAPI_YapaServiceAvailabilityResult struct {
+type TurknetAPIYapaServiceAvailabilityResult struct {
 	Description                     string `json:"Description,omitempty"`
 	IsAvailable                     bool   `json:"IsAvailable,omitempty"`
 	IsIndoor                        bool   `json:"IsIndoor,omitempty"`
 	IsTurknetStatusActiveForSantral bool   `json:"IsTurknetStatusActiveForSantral,omitempty"`
 }
 
-type TurknetAPI_ServiceAvailabilityResult struct {
-	FiberServiceAvailablity     TurknetAPI_FiberServiceAvailablityResult     `json:"FiberServiceAvailablity,omitempty"`
-	IsGigaFiberPlanned          bool                                         `json:"IsGigaFiberPlanned,omitempty"`
-	VAEFiberServiceAvailability TurknetAPI_VAEFiberServiceAvailabilityResult `json:"VAEFiberServiceAvailability,omitempty"`
-	VDSLServiceAvailability     TurknetAPI_VDSLServiceAvailabilityResult     `json:"VDSLServiceAvailability,omitempty"`
-	XDSLServiceAvailability     TurknetAPI_XDSLServiceAvailabilityResult     `json:"XDSLServiceAvailability,omitempty"`
-	YapaServiceAvailability     TurknetAPI_YapaServiceAvailabilityResult     `json:"YapaServiceAvailability,omitempty"`
+type TurknetAPIServiceAvailabilityResult struct {
+	FiberServiceAvailablity     TurknetAPIFiberServiceAvailablityResult     `json:"FiberServiceAvailablity,omitempty"`
+	IsGigaFiberPlanned          bool                                        `json:"IsGigaFiberPlanned,omitempty"`
+	VAEFiberServiceAvailability TurknetAPIVaeFiberServiceAvailabilityResult `json:"VAEFiberServiceAvailability,omitempty"`
+	VDSLServiceAvailability     TurknetAPIVdslServiceAvailabilityResult     `json:"VDSLServiceAvailability,omitempty"`
+	XDSLServiceAvailability     TurknetAPIXdslServiceAvailabilityResult     `json:"XDSLServiceAvailability,omitempty"`
+	YapaServiceAvailability     TurknetAPIYapaServiceAvailabilityResult     `json:"YapaServiceAvailability,omitempty"`
 }
 
-type TurknetAPI_IDname struct {
+type TurknetAPIIDname struct {
 	ID   string `json:"Id,omitempty"`
 	Name string `json:"Name,omitempty"`
 }
 
-type TurknetAPI_KV map[string]int
+type TurknetAPIKv map[string]int
 
-type TurknetAPI_GetToken_Response struct {
-	ServiceResult TurknetAPI_ServiceResult `json:"ServiceResult"`
-	Token         string                   `json:"Token,omitempty"`
+type TurknetAPIGetTokenResponse struct {
+	ServiceResult TurknetAPIServiceResult `json:"ServiceResult"`
+	Token         string                  `json:"Token,omitempty"`
 }
 
-type TurknetAPI_GetBBKCountyList_Response struct {
-	ServiceResult TurknetAPI_ServiceResult `json:"ServiceResult"`
-	LstIlce       []TurknetAPI_IDname      `json:"lstIlce,omitempty"`
+type TurknetAPIGetBBKCountyListResponse struct {
+	ServiceResult TurknetAPIServiceResult `json:"ServiceResult"`
+	LstIlce       []TurknetAPIIDname      `json:"lstIlce,omitempty"`
 }
 
-type TurknetAPI_GetBBKBucakList_Response struct {
-	ServiceResult TurknetAPI_ServiceResult `json:"ServiceResult"`
-	LstBucak      []TurknetAPI_IDname      `json:"lstBucak,omitempty"`
+type TurknetAPIGetBBKBucakListResponse struct {
+	ServiceResult TurknetAPIServiceResult `json:"ServiceResult"`
+	LstBucak      []TurknetAPIIDname      `json:"lstBucak,omitempty"`
 }
 
-type TurknetAPI_GetBBKKoyList_Response struct {
-	ServiceResult TurknetAPI_ServiceResult `json:"ServiceResult"`
-	LstKoy        []TurknetAPI_IDname      `json:"lstKoy,omitempty"`
+type TurknetAPIGetBBKKoyListResponse struct {
+	ServiceResult TurknetAPIServiceResult `json:"ServiceResult"`
+	LstKoy        []TurknetAPIIDname      `json:"lstKoy,omitempty"`
 }
 
-type TurknetAPI_GetBBKMahalleList_Response struct {
-	ServiceResult TurknetAPI_ServiceResult `json:"ServiceResult"`
-	LstMahalle    []TurknetAPI_IDname      `json:"lstMahalle,omitempty"`
+type TurknetAPIGetBBKMahalleListResponse struct {
+	ServiceResult TurknetAPIServiceResult `json:"ServiceResult"`
+	LstMahalle    []TurknetAPIIDname      `json:"lstMahalle,omitempty"`
 }
 
-type TurknetAPI_GetBBKCaddeList_Response struct {
-	ServiceResult TurknetAPI_ServiceResult `json:"ServiceResult"`
-	LstCadde      []TurknetAPI_IDname      `json:"lstCadde,omitempty"`
+type TurknetAPIGetBBKCaddeListResponse struct {
+	ServiceResult TurknetAPIServiceResult `json:"ServiceResult"`
+	LstCadde      []TurknetAPIIDname      `json:"lstCadde,omitempty"`
 }
 
-type TurknetAPI_GetBBKBinaList_Response struct {
-	ServiceResult TurknetAPI_ServiceResult `json:"ServiceResult"`
-	LstBina       []TurknetAPI_IDname      `json:"lstBina,omitempty"`
+type TurknetAPIGetBBKBinaListResponse struct {
+	ServiceResult TurknetAPIServiceResult `json:"ServiceResult"`
+	LstBina       []TurknetAPIIDname      `json:"lstBina,omitempty"`
 }
 
-type TurknetAPI_GetBBKList_Response struct {
-	ServiceResult TurknetAPI_ServiceResult `json:"ServiceResult"`
-	LstDaire      []TurknetAPI_IDname      `json:"lstDaire,omitempty"`
+type TurknetAPIGetBBKListResponse struct {
+	ServiceResult TurknetAPIServiceResult `json:"ServiceResult"`
+	LstDaire      []TurknetAPIIDname      `json:"lstDaire,omitempty"`
 }
 
-type TurknetAPI_CheckServiceAvailability_Response struct {
-	ServiceResult TurknetAPI_ServiceResult             `json:"ServiceResult"`
-	Result        TurknetAPI_ServiceAvailabilityResult `json:"Result,omitempty"`
+type TurknetAPICheckServiceAvailabilityResponse struct {
+	ServiceResult TurknetAPIServiceResult             `json:"ServiceResult"`
+	Result        TurknetAPIServiceAvailabilityResult `json:"Result,omitempty"`
 }
 
-func CreateTurknetAPIClient() turknetAPIClient {
-	return turknetAPIClient{"", "github.com/linuxgemini/turknet-query/cmd TurknetAPIClient/1.1"}
+func CreateTurknetAPIClient() TurknetAPIClient {
+	return TurknetAPIClient{"", "github.com/linuxgemini/turknet-query/cmd TurknetAPIClient/1.1"}
 }
 
-func (tac *turknetAPIClient) GetToken() (err error) {
+func (tac *TurknetAPIClient) GetToken() (err error) {
 	url := "https://turk.net/service/AddressServ.svc/GetToken"
 
 	var jsonStr = []byte(`{}`)
@@ -168,16 +169,18 @@ func (tac *turknetAPIClient) GetToken() (err error) {
 	if err != nil {
 		return err
 	}
-	defer resp.Body.Close()
+	defer func(Body io.ReadCloser) {
+		_ = Body.Close()
+	}(resp.Body)
 
-	body, err := ioutil.ReadAll(resp.Body)
+	body, err := io.ReadAll(resp.Body)
 	if err != nil {
 		return err
 	}
 
-	var result TurknetAPI_GetToken_Response
+	var result TurknetAPIGetTokenResponse
 	if err := json.Unmarshal(body, &result); err != nil {
-		return errors.New("failed to unmarshal TurknetAPI_GetToken_Response")
+		return errors.New("failed to unmarshal TurknetAPIGetTokenResponse")
 	}
 
 	tac.ClientToken = result.Token
@@ -185,7 +188,7 @@ func (tac *turknetAPIClient) GetToken() (err error) {
 	return
 }
 
-func (tac *turknetAPIClient) _CreateWebRequest(url string, jsonStr []byte) ([]byte, error) {
+func (tac *TurknetAPIClient) _CreateWebRequest(url string, jsonStr []byte) ([]byte, error) {
 	if tac.ClientToken == "" {
 		if err := tac.GetToken(); err != nil {
 			return nil, err
@@ -205,9 +208,11 @@ func (tac *turknetAPIClient) _CreateWebRequest(url string, jsonStr []byte) ([]by
 	if err != nil {
 		return nil, err
 	}
-	defer resp.Body.Close()
+	defer func(Body io.ReadCloser) {
+		_ = Body.Close()
+	}(resp.Body)
 
-	body, err := ioutil.ReadAll(resp.Body)
+	body, err := io.ReadAll(resp.Body)
 	if err != nil {
 		return nil, err
 	}
@@ -215,7 +220,7 @@ func (tac *turknetAPIClient) _CreateWebRequest(url string, jsonStr []byte) ([]by
 	return body, err
 }
 
-func (tac *turknetAPIClient) _CreateGetWebRequest(url string) ([]byte, error) {
+func (tac *TurknetAPIClient) _CreateGetWebRequest(url string) ([]byte, error) {
 	if tac.ClientToken == "" {
 		if err := tac.GetToken(); err != nil {
 			return nil, err
@@ -234,9 +239,11 @@ func (tac *turknetAPIClient) _CreateGetWebRequest(url string) ([]byte, error) {
 	if err != nil {
 		return nil, err
 	}
-	defer resp.Body.Close()
+	defer func(Body io.ReadCloser) {
+		_ = Body.Close()
+	}(resp.Body)
 
-	body, err := ioutil.ReadAll(resp.Body)
+	body, err := io.ReadAll(resp.Body)
 	if err != nil {
 		return nil, err
 	}
@@ -244,8 +251,8 @@ func (tac *turknetAPIClient) _CreateGetWebRequest(url string) ([]byte, error) {
 	return body, err
 }
 
-func (tac *turknetAPIClient) _ConvertIDnameToKV(idn []TurknetAPI_IDname) TurknetAPI_KV {
-	var result = make(TurknetAPI_KV)
+func (tac *TurknetAPIClient) _ConvertIDnameToKV(idn []TurknetAPIIDname) TurknetAPIKv {
+	var result = make(TurknetAPIKv)
 	for _, ta := range idn {
 		i, _ := strconv.Atoi(ta.ID)
 		result[ta.Name] = i
@@ -254,7 +261,7 @@ func (tac *turknetAPIClient) _ConvertIDnameToKV(idn []TurknetAPI_IDname) Turknet
 	return result
 }
 
-func (tac *turknetAPIClient) GetBBKCountyList(ilPlakaKodu int) (TurknetAPI_KV, error) {
+func (tac *TurknetAPIClient) GetBBKCountyList(ilPlakaKodu int) (TurknetAPIKv, error) {
 	url := fmt.Sprintf("https://turk.net/service/AddressGetServ.svc/GetBBKCountyList/%d", ilPlakaKodu)
 
 	body, err := tac._CreateGetWebRequest(url)
@@ -262,15 +269,15 @@ func (tac *turknetAPIClient) GetBBKCountyList(ilPlakaKodu int) (TurknetAPI_KV, e
 		return nil, err
 	}
 
-	var result TurknetAPI_GetBBKCountyList_Response
+	var result TurknetAPIGetBBKCountyListResponse
 	if err := json.Unmarshal(body, &result); err != nil {
-		return nil, errors.New("failed to unmarshal TurknetAPI_GetBBKCountyList_Response")
+		return nil, errors.New("failed to unmarshal TurknetAPIGetBBKCountyListResponse")
 	}
 
 	return tac._ConvertIDnameToKV(result.LstIlce), nil
 }
 
-func (tac *turknetAPIClient) GetBBKBucakList(ilceKodu int) (TurknetAPI_KV, error) {
+func (tac *TurknetAPIClient) GetBBKBucakList(ilceKodu int) (TurknetAPIKv, error) {
 	url := fmt.Sprintf("https://turk.net/service/AddressGetServ.svc/GetBBKBucakList/%d", ilceKodu)
 
 	body, err := tac._CreateGetWebRequest(url)
@@ -278,15 +285,15 @@ func (tac *turknetAPIClient) GetBBKBucakList(ilceKodu int) (TurknetAPI_KV, error
 		return nil, err
 	}
 
-	var result TurknetAPI_GetBBKBucakList_Response
+	var result TurknetAPIGetBBKBucakListResponse
 	if err := json.Unmarshal(body, &result); err != nil {
-		return nil, errors.New("failed to unmarshal TurknetAPI_GetBBKBucakList_Response")
+		return nil, errors.New("failed to unmarshal TurknetAPIGetBBKBucakListResponse")
 	}
 
 	return tac._ConvertIDnameToKV(result.LstBucak), nil
 }
 
-func (tac *turknetAPIClient) GetBBKKoyList(bucakKodu int) (TurknetAPI_KV, error) {
+func (tac *TurknetAPIClient) GetBBKKoyList(bucakKodu int) (TurknetAPIKv, error) {
 	url := fmt.Sprintf("https://turk.net/service/AddressGetServ.svc/GetBBKKoyList/%d", bucakKodu)
 
 	body, err := tac._CreateGetWebRequest(url)
@@ -294,15 +301,15 @@ func (tac *turknetAPIClient) GetBBKKoyList(bucakKodu int) (TurknetAPI_KV, error)
 		return nil, err
 	}
 
-	var result TurknetAPI_GetBBKKoyList_Response
+	var result TurknetAPIGetBBKKoyListResponse
 	if err := json.Unmarshal(body, &result); err != nil {
-		return nil, errors.New("failed to unmarshal TurknetAPI_GetBBKKoyList_Response")
+		return nil, errors.New("failed to unmarshal TurknetAPIGetBBKKoyListResponse")
 	}
 
 	return tac._ConvertIDnameToKV(result.LstKoy), nil
 }
 
-func (tac *turknetAPIClient) GetBBKMahalleList(koyKodu int) (TurknetAPI_KV, error) {
+func (tac *TurknetAPIClient) GetBBKMahalleList(koyKodu int) (TurknetAPIKv, error) {
 	url := fmt.Sprintf("https://turk.net/service/AddressGetServ.svc/GetBBKMahalleList/%d", koyKodu)
 
 	body, err := tac._CreateGetWebRequest(url)
@@ -310,15 +317,15 @@ func (tac *turknetAPIClient) GetBBKMahalleList(koyKodu int) (TurknetAPI_KV, erro
 		return nil, err
 	}
 
-	var result TurknetAPI_GetBBKMahalleList_Response
+	var result TurknetAPIGetBBKMahalleListResponse
 	if err := json.Unmarshal(body, &result); err != nil {
-		return nil, errors.New("failed to unmarshal TurknetAPI_GetBBKMahalleList_Response")
+		return nil, errors.New("failed to unmarshal TurknetAPIGetBBKMahalleListResponse")
 	}
 
 	return tac._ConvertIDnameToKV(result.LstMahalle), nil
 }
 
-func (tac *turknetAPIClient) GetBBKCaddeList(mahalleKodu int) (TurknetAPI_KV, error) {
+func (tac *TurknetAPIClient) GetBBKCaddeList(mahalleKodu int) (TurknetAPIKv, error) {
 	url := fmt.Sprintf("https://turk.net/service/AddressGetServ.svc/GetBBKCaddeList/%d", mahalleKodu)
 
 	body, err := tac._CreateGetWebRequest(url)
@@ -326,15 +333,15 @@ func (tac *turknetAPIClient) GetBBKCaddeList(mahalleKodu int) (TurknetAPI_KV, er
 		return nil, err
 	}
 
-	var result TurknetAPI_GetBBKCaddeList_Response
+	var result TurknetAPIGetBBKCaddeListResponse
 	if err := json.Unmarshal(body, &result); err != nil {
-		return nil, errors.New("failed to unmarshal TurknetAPI_GetBBKCaddeList_Response")
+		return nil, errors.New("failed to unmarshal TurknetAPIGetBBKCaddeListResponse")
 	}
 
 	return tac._ConvertIDnameToKV(result.LstCadde), nil
 }
 
-func (tac *turknetAPIClient) GetBBKBinaList(caddeKodu int) (TurknetAPI_KV, error) {
+func (tac *TurknetAPIClient) GetBBKBinaList(caddeKodu int) (TurknetAPIKv, error) {
 	url := fmt.Sprintf("https://turk.net/service/AddressGetServ.svc/GetBBKBinaList/%d", caddeKodu)
 
 	body, err := tac._CreateGetWebRequest(url)
@@ -342,15 +349,15 @@ func (tac *turknetAPIClient) GetBBKBinaList(caddeKodu int) (TurknetAPI_KV, error
 		return nil, err
 	}
 
-	var result TurknetAPI_GetBBKBinaList_Response
+	var result TurknetAPIGetBBKBinaListResponse
 	if err := json.Unmarshal(body, &result); err != nil {
-		return nil, errors.New("failed to unmarshal TurknetAPI_GetBBKBinaList_Response")
+		return nil, errors.New("failed to unmarshal TurknetAPIGetBBKBinaListResponse")
 	}
 
 	return tac._ConvertIDnameToKV(result.LstBina), nil
 }
 
-func (tac *turknetAPIClient) GetBBKList(binaKodu int) (TurknetAPI_KV, error) {
+func (tac *TurknetAPIClient) GetBBKList(binaKodu int) (TurknetAPIKv, error) {
 	url := fmt.Sprintf("https://turk.net/service/AddressGetServ.svc/GetBBKList/%d", binaKodu)
 
 	body, err := tac._CreateGetWebRequest(url)
@@ -358,27 +365,27 @@ func (tac *turknetAPIClient) GetBBKList(binaKodu int) (TurknetAPI_KV, error) {
 		return nil, err
 	}
 
-	var result TurknetAPI_GetBBKList_Response
+	var result TurknetAPIGetBBKListResponse
 	if err := json.Unmarshal(body, &result); err != nil {
-		return nil, errors.New("failed to unmarshal TurknetAPI_GetBBKList_Response")
+		return nil, errors.New("failed to unmarshal TurknetAPIGetBBKListResponse")
 	}
 
 	return tac._ConvertIDnameToKV(result.LstDaire), nil
 }
 
-func (tac *turknetAPIClient) CheckServiceAvailability(valueType string, value string) (TurknetAPI_ServiceAvailabilityResult, error) {
+func (tac *TurknetAPIClient) CheckServiceAvailability(valueType string, value string) (TurknetAPIServiceAvailabilityResult, error) {
 	url := "https://turk.net/service/AddressServ.svc/CheckServiceAvailability"
 
 	var jsonStr = []byte(fmt.Sprintf(`{"InquirySource":2,"IsInfrastructureInquiry":true,"Key":"%s","Value":"%s"}`, valueType, value))
 
 	body, err := tac._CreateWebRequest(url, jsonStr)
 	if err != nil {
-		return TurknetAPI_ServiceAvailabilityResult{}, err
+		return TurknetAPIServiceAvailabilityResult{}, err
 	}
 
-	var result TurknetAPI_CheckServiceAvailability_Response
+	var result TurknetAPICheckServiceAvailabilityResponse
 	if err := json.Unmarshal(body, &result); err != nil {
-		return TurknetAPI_ServiceAvailabilityResult{}, errors.New("failed to unmarshal TurknetAPI_CheckServiceAvailability_Response")
+		return TurknetAPIServiceAvailabilityResult{}, errors.New("failed to unmarshal TurknetAPICheckServiceAvailabilityResponse")
 	}
 
 	return result.Result, nil

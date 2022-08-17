@@ -1,4 +1,5 @@
 /*
+Package utils
 Copyright (c) 2022 İlteriş Yağıztegin Eroğlu (linuxgemini)
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -22,7 +23,7 @@ THE SOFTWARE.
 package utils
 
 var (
-	illerAlfabetik map[string]int = map[string]int{
+	illerAlfabetik = map[string]int{
 		"ADANA":          1,
 		"ADIYAMAN":       2,
 		"AFYONKARAHİSAR": 3,
@@ -107,6 +108,7 @@ var (
 	}
 )
 
-func GetIlListesi() map[string]int {
+//_ GetIlListesi()
+func _() map[string]int {
 	return illerAlfabetik
 }

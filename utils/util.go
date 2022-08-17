@@ -1,4 +1,5 @@
 /*
+Package utils
 Copyright (c) 2022 İlteriş Yağıztegin Eroğlu (linuxgemini)
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -130,7 +131,7 @@ func AskUserForIl() (int, error) {
 	return illerAlfabetik[result], nil
 }
 
-func AskUserForSomething(midsentence string, list api.TurknetAPI_KV) (int, error) {
+func AskUserForSomething(midsentence string, list api.TurknetAPIKv) (int, error) {
 	label := fmt.Sprintf("Lütfen %s seçin", midsentence)
 
 	mapKeys := GetKeysFromKVMap(list)

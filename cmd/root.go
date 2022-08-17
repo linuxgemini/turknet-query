@@ -1,4 +1,5 @@
 /*
+Package cmd
 Copyright (c) 2022 İlteriş Yağıztegin Eroğlu (linuxgemini)
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -22,7 +23,7 @@ THE SOFTWARE.
 package cmd
 
 import (
-	"fmt"
+	fmt "fmt"
 	"os"
 
 	"github.com/fatih/color"
@@ -39,7 +40,7 @@ var rootCmd = &cobra.Command{
 		tnAPI := api.CreateTurknetAPIClient()
 
 		var (
-			result                api.TurknetAPI_ServiceAvailabilityResult
+			result                api.TurknetAPIServiceAvailabilityResult
 			valueType             string
 			value                 string
 			promptUserForMoreData bool = true
@@ -52,13 +53,13 @@ var rootCmd = &cobra.Command{
 			caddeKodu             int
 			binaKodu              int
 			daireKodu             int
-			countyList            api.TurknetAPI_KV
-			bucakList             api.TurknetAPI_KV
-			koyList               api.TurknetAPI_KV
-			mahalleList           api.TurknetAPI_KV
-			caddeList             api.TurknetAPI_KV
-			binaList              api.TurknetAPI_KV
-			daireList             api.TurknetAPI_KV
+			countyList            api.TurknetAPIKv
+			bucakList             api.TurknetAPIKv
+			koyList               api.TurknetAPIKv
+			mahalleList           api.TurknetAPIKv
+			caddeList             api.TurknetAPIKv
+			binaList              api.TurknetAPIKv
+			daireList             api.TurknetAPIKv
 		)
 
 		flagValueBBK, _ := cmd.Flags().GetString("bbk")
@@ -187,7 +188,7 @@ var rootCmd = &cobra.Command{
 			panic(err)
 		}
 
-		fmt.Fprintf(color.Output, `%s
+		_, err = fmt.Fprintf(color.Output, `%s
 	Var mı?: %s
 	GigaFiber mi?: %s
 	GigaFiber kurulumu planda var mı?: %s
@@ -259,6 +260,9 @@ var rootCmd = &cobra.Command{
 			utils.GetColoredBoolText(result.YapaServiceAvailability.IsTurknetStatusActiveForSantral),
 			utils.GetDescriptionButFancier(result.YapaServiceAvailability.Description),
 		)
+		if err != nil {
+			panic(err)
+		}
 
 		return nil
 	},
@@ -266,7 +270,7 @@ var rootCmd = &cobra.Command{
 
 func Execute() {
 	if err := rootCmd.Execute(); err != nil {
-		fmt.Fprintln(os.Stderr, err)
+		_, _ = fmt.Fprintln(os.Stderr, err)
 		os.Exit(1)
 	}
 }
